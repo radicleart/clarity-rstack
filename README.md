@@ -1,33 +1,20 @@
-# Clarity Hackathon Level 1 2020
+# Clarity Hackathon Risidio Lightning Swaps 2020
 
-## Minting Non Fungible Digital Collectibles
+## Fraud Proof Swaps
 
 Goals / roadmap of this work are;
 
-* define digital assets as a space of sha 256 hashes (of collectibles / artwork)
-* define projects as spaces of digital assets
-* mint digital collectibles to owners addresses
-* allow project (saas client) and platform to charge a small minting fee
-* add marketplace and auction functionality
+Enable swapping lightning btc for STX tokens linking the stacks 2.0 project to development on lightning network.
+Swaps use the LSAT (402 payment) protocol. The roadmap is about enabling delegated stacking / stack pools and
+hopes to make stacking accessible to people in the lightning community.
 
-The specific amount of STX required to mint is project dependent and set by the project administrator.
-
-Functionality is delivered in the following modules;
-
-1. nongibles.clar
-2. projects.clar
-3. error-codes.clar
-
-Where `nongibles.clar` manages the minting of assets / collectibles and `projects.clar`
-handles project administration. Common erros are implemented by `error-codes.clar`.
-
-We hope to connect these smart contracts to a platform for digital collectible. The project is inspired
-by the Open Sea platform and our work building the radicle art and loopbomb d-apps.
+Ultimately we'd like to see Proof of Transfer shift to being based on HTLC (Hashed Time Locked Contracts) to mitigate
+the problem of Bitcoin transaction fees.
 
 ## Unit Testing
 
 ```bash
-git clone git@github.com:radicleart/clarity-hackathon-level1.git
+git clone git@github.com:radicleart/clarity-rstack.git
 
 npm install
 ```
@@ -37,18 +24,10 @@ npm install
 test classes can be found in `test/unit/*.ts`
 
 ```javascript
-npm run nongibles
-npm run projects
+npm run swaps
 ```
 
-Note: nongibles tests currently fail because of current limitations in tooling around using
-`(contract-call?)` in unit test environment.
-
 ## Integration Testing
-
-Testing of this contract requires integration testing on the stacks mocknet. A high level description is presented below
-but most of the details were worked out by  [Friedger](https://github.com/friedger/clarity-smart-contracts) in Blockstack Community
-so please head over there and check out his `escrow` contract for full details.
 
 Generate two key sets using
 
@@ -64,47 +43,16 @@ vi $HOME/stacks-blockchain/testnet/stacks-node/Stacks.toml
 nohup cargo testnet start --config=./testnet/stacks-node/Stacks.toml &
 
 // tail the log file to watch for runtime errors in your script...
-tail -f -n 200000 nohup.out | grep -i ST18PE05NG1YN7X6VX9SN40NZYP7B6NQY6C96ZFRC
+tail -f -n 200000 nohup.out | grep -i ST1EYJJ3V4DNRVHRWANP8S3CXJ70SFBJF2F8DH2RM
 ```
 
 Check balances and contract deployment using the API;
 
-* Minter Balance: http://127.0.0.1:20443/v2/accounts/ST18PE05NG1YN7X6VX9SN40NZYP7B6NQY6C96ZFRC
-* Contract Balance: http://127.0.0.1:20443/v2/accounts/STFJEDEQB1Y1CQ7F04CS62DCS5MXZVSNXXN413ZG
-* Contract Source: http://127.0.0.1:20443/v2/contracts/source/ST18PE05NG1YN7X6VX9SN40NZYP7B6NQY6C96ZFRC/collectibles
+* [Swapper Balance:](http://127.0.0.1:20443/v2/accounts/STFJEDEQB1Y1CQ7F04CS62DCS5MXZVSNXXN413ZG)
+* [Contract Balance:](http://127.0.0.1:20443/v2/accounts/ST1EYJJ3V4DNRVHRWANP8S3CXJ70SFBJF2F8DH2RM)
+* [Contract Source Code:](http://127.0.0.1:20443/v2/contracts/source/ST1EYJJ3V4DNRVHRWANP8S3CXJ70SFBJF2F8DH2RM/lightning-swaps-v1)
 
 ## Issues
-
-### Error Running Sidecar
-
-```bash
-$ npm run dev:integrated
-
-> @blockstack/stacks-blockchain-sidecar@1.0.0 dev:integrated /Users/mikey/hubgit/blockstack/stacks-blockchain-sidecar
-> npm run generate:schemas && npm run devenv:build && concurrently npm:dev npm:devenv:deploy
-
-npm ERR! missing script: generate:schemas
-```
-
-### Unable to Call Read Only Functions
-
-The problem  with the sidecar combined with not being able to find a way to call read only functions
-using `makeContractCall` meant I wasn't quite able to read state from the chain and get the tests into
-the correct shape.
-
-```javascript
-  var transaction = await makeContractCall({
-    contractAddress: keys['contract-base'].stacksAddress,
-    contractName,
-    functionName,
-    functionArgs,
-    fee,
-    senderKey: keys[sender].secretKey,
-    nonce,
-    network,
-  });
-  var result = await broadcastTransaction(transaction, network);
-```
 
 ## References
 

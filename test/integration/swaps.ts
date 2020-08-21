@@ -3,6 +3,7 @@ import { readFromContract } from "../unit/query-utils"
 import * as fs from "fs";
 import {
   StacksTransaction,
+  TxBroadcastResult,
   makeContractDeploy,
   makeContractCall,
   ClarityValue,
@@ -36,10 +37,10 @@ async function deployContract(contractName: string, nonce): Promise<Object> {
     network,
   });
   await broadcastTransaction(transaction, network);
-  await new Promise((r) => setTimeout(r, 30000));
+  await new Promise((r) => setTimeout(r, 4000));
   return transaction;
 }
-async function callContract(nonce, sender: string, contractName: string, functionName: string, functionArgs: ClarityValue[]): Promise<StacksTransaction> {
+async function callContract(nonce, sender: string, contractName: string, functionName: string, functionArgs: ClarityValue[]): Promise<TxBroadcastResult> {
   console.log("transaction: contract=" + contractName + " sender=" + sender + " function=" + functionName + " args= .. ");
   var transaction = await makeContractCall({
     contractAddress: keys['contract-base'].stacksAddress,
@@ -51,44 +52,39 @@ async function callContract(nonce, sender: string, contractName: string, functio
     nonce,
     network
   });
-  var result = await broadcastTransaction(transaction, network);
+  var result:any = await broadcastTransaction(transaction, network);
   // console.log(transaction);
-  // console.log(result);
-  return transaction;
+  console.log(result);
+  assert.isNotOk(result.reason, "Transaction failed");
+  return result;
 }
-
+/**
+**/
 describe("Deploying contracts", () => {
-  it("should deploy LightningSwaps contract and wait for confirmation", async () => {
-    let transaction = await deployContract("LightningSwaps", new BigNum(0));
+  it("should deploy lightning-swaps-v1 contract and wait for confirmation", async () => {
+    let transaction = await deployContract("lightning-swaps-v1", new BigNum(0));
     assert.isOk(transaction, "Transaction succeeded");
     console.log("=======================================================================================");
-    console.log(transaction);
+    // console.log(transaction);
     console.log("=======================================================================================");
   });
 });
 
 describe("Check contracts deployed", () => {
-  it("should return LightningSwaps contract address", async () => {
-    let args = [];
-    let transaction = await callContract(new BigNum(2), "contract-base", "LightningSwaps", "get-address", args);
-    console.log(transaction);
-    assert.isOk(transaction, "Transaction succeeded");
+  it("should return lightning-swaps-v1 contract address", async () => {
+    let args = [standardPrincipalCV(keys['project1'].stacksAddress), bufferCV(Buffer.from("http://project1.com/assets/v1")), uintCV(0x5000)];
+    let result:any = await callContract(new BigNum(1), "contract-base", "lightning-swaps-v1", "get-address", args);
+    // console.log(transaction);
+    assert.isOk(result.success, "Transaction succeeded");
   })
 })
 
 describe("Test project admin functions", () => {
-  it("should allow insert if tx-sender is contract owner", async () => {
+  it("should not allow insert if tx-sender is contract owner", async () => {
     let args = [standardPrincipalCV(keys['project1'].stacksAddress), bufferCV(Buffer.from("http://project1.com/assets/v1")), uintCV(0x5000)];
-    let transaction = await callContract(new BigNum(2), "contract-base", "projects", "add-project", args);
-    assert.isOk(transaction, "Transaction succeeded");
-  })
-  it("should allow read of inserted project", async () => {
-    let args = [standardPrincipalCV(keys['project1'].stacksAddress)];
-    let transaction = await callContract(new BigNum(0), "project1", "projects", "get-project", args);
-  })
-  it("should return error if no project found", async () => {
-    let args = [standardPrincipalCV(keys['project1'].stacksAddress)];
-    let transaction = await callContract(new BigNum(0), "project2", "projects", "get-project", args);
+    let result:any = await callContract(new BigNum(2), "contract-base", "lightning-swaps-v1", "add-project", args);
+    // console.log(transaction);
+    assert.isOk(result.success, "Transaction succeeded");
   })
 });
 

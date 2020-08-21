@@ -11,11 +11,10 @@
     "node": ">=10"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha 'test/unit/swaps.ts'",
     "test:watch": "mocha --watch",
-    "deploy": "mocha 'test/integration/deploy.ts'",
-    "LightningSwaps": "mocha 'test/unit/LightningSwaps.ts'",
-    "projects": "mocha 'test/unit/projects.ts'"
+    "iswaps": "mocha 'test/integration/swaps.ts'",
+    "uswaps": "mocha 'test/unit/swaps.ts'"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
