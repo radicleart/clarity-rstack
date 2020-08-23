@@ -1,15 +1,19 @@
-# Clarity Hackathon Risidio Lightning Swaps 2020
+# Risidio STX Lightning Swaps 2020
 
 ## Fraud Proof Swaps
 
 Goals / roadmap of this work are;
 
-Enable swapping lightning btc for STX tokens linking the stacks 2.0 project to development on lightning network.
-Swaps use the LSAT (402 payment) protocol. The roadmap is about enabling delegated stacking / stack pools and
-hopes to make stacking accessible to people in the lightning community.
+Enable Lightning BTC to STX token swaps using Lightning Service Authentication Tokens
+(LSAT or 402) payment protocol.
 
-Ultimately we'd like to see Proof of Transfer shift to being based on HTLC (Hashed Time Locked Contracts) to mitigate
-the problem of Bitcoin transaction fees.
+Our inspiration comes from both the Blockstack and Lightning projects and we wanted to build something
+which helps engage the Lightning community in the Stacks 2.0 project.
+
+We intend to build delegated stacking services to help small token holders to participate in
+the exciting development of smart contracts on Bitcoin.
+
+Check out our web application [rStack](https://stax.risidio.com).
 
 ## Unit Testing
 

@@ -54,7 +54,7 @@ async function callContract(nonce, sender: string, contractName: string, functio
   });
   var result:any = await broadcastTransaction(transaction, network);
   // console.log(transaction);
-  console.log(result);
+  // console.log(result);
   assert.isNotOk(result.reason, "Transaction failed");
   return result;
 }
@@ -72,19 +72,19 @@ describe("Deploying contracts", () => {
 
 describe("Check contracts deployed", () => {
   it("should return lightning-swaps-v1 contract address", async () => {
-    let args = [standardPrincipalCV(keys['project1'].stacksAddress), bufferCV(Buffer.from("http://project1.com/assets/v1")), uintCV(0x5000)];
-    let result:any = await callContract(new BigNum(1), "contract-base", "lightning-swaps-v1", "get-address", args);
+    let args = [bufferCV(Buffer.from("815"))];
+    let result:any = await callContract(new BigNum(1), "contract-base", "lightning-swaps-v1", "get-tranfer", args);
     // console.log(transaction);
-    assert.isOk(result.success, "Transaction succeeded");
+    assert.isOk(result, "Transaction succeeded");
   })
 })
 
 describe("Test project admin functions", () => {
-  it("should not allow insert if tx-sender is contract owner", async () => {
-    let args = [standardPrincipalCV(keys['project1'].stacksAddress), bufferCV(Buffer.from("http://project1.com/assets/v1")), uintCV(0x5000)];
-    let result:any = await callContract(new BigNum(2), "contract-base", "lightning-swaps-v1", "add-project", args);
+  it("should not allow insert if tx-sender is not admin", async () => {
+    let args = [standardPrincipalCV(keys['project1'].stacksAddress), bufferCV(Buffer.from("815")), uintCV(0x5000)];
+    let result:any = await callContract(new BigNum(2), "contract-base", "lightning-swaps-v1", "transfer-to-recipient!", args);
     // console.log(transaction);
-    assert.isOk(result.success, "Transaction succeeded");
+    assert.isOk(result, "Transaction succeeded");
   })
 });
 
