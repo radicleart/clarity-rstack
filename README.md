@@ -2,18 +2,18 @@
 
 ## Fraud Proof Swaps
 
-Goals / roadmap of this work are;
-
 Enable Lightning BTC to STX token swaps using Lightning Service Authentication Tokens
 (LSAT or 402) payment protocol.
 
-Our inspiration comes from both the Blockstack and Lightning projects and we wanted to build something
-which helps engage the Lightning community in the Stacks 2.0 project.
+This contract is part of a more ambitious project one component of which is fraud proof swaps of btc for stx over the Lightning network using the LSAT protocol. The main project can be found at [rStack](https://stax.risidio.com).
 
-We intend to build delegated stacking services to help small token holders to participate in
-the exciting development of smart contracts on Bitcoin.
+As it stands the contract here provides the transfer function of the stx tokens that have been purchased indepently via a lightning transaction. LSAT generates a token that combines with the payment preimage to provide a proof of payment. On receipt of this token via a separate websocket connection an 'admin' wallet is able to call this contract to make the final transfer.
 
-Check out our web application [rStack](https://stax.risidio.com).
+We ended up building the tools to deploy the contract on testnet - we didin't realise we were doing this in parallel with the Blockstack PBC explorer development. This is probably beneficial in the long run as it helps to decentralise the project.
+
+Challenges involved have all been around logistics of getting it working on mainnet. Figuring out the correct value for the nonce, for example, when broadcasting transactions and getting our heads around the multiple calls and states of the application.
+
+Our goals / roadmap with this work would be to provide an educational site and build services such as delegated stacking to help small STX token holders participate in proof of transfer.
 
 ## Unit Testing
 

@@ -21,7 +21,7 @@
 ;; transfer stx:
 ;;      The preimage is not already contained in the map
 ;;      The amount is less than the senders balance
-;; 
+;;
 
 (define-public (transfer-to-recipient! (recipient principal) (preimage (buff 32)) (amount uint))
   (begin
