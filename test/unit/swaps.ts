@@ -34,7 +34,7 @@ describe("Lightning swaps test suite", () => {
     
     it("should return administrator", async () => {
       const result = await readFromContract(client, "get-administrator", []);
-      assert.isOk(result.rawResult === '(ok ST1EYJJ3V4DNRVHRWANP8S3CXJ70SFBJF2F8DH2RM)');
+      assert.isOk(result.rawResult === '(ok ST1EYJJ3V4DNRVHRWANP8S3CXJ70SFBJF2F8DH2RM.lightning-swaps-v1)');
     })
 
     it ("should not let sender do transfer as not enough funds", async () => {

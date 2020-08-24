@@ -1,19 +1,16 @@
 # Risidio STX Lightning Swaps 2020
 
-## Fraud Proof Swaps
+## Delegated Stacking and Fraud Proof Swaps
 
-Enable Lightning BTC to STX token swaps using Lightning Service Authentication Tokens
-(LSAT or 402) payment protocol.
+Enable Delegated Stacking via swaps of Lightning BTC to STX tokens using Lightning Service Authentication Tokens (LSAT/402) protocol. Our goals revolve around providing services to help small STX token holders participate in proof of transfer.
 
-This contract is part of a more ambitious project one component of which is fraud proof swaps of btc for stx over the Lightning network using the LSAT protocol. The main project can be found at [rStack](https://stax.risidio.com).
+The Clarity contract is part of a more ambitious project. Its purpose is to transfer STX tokens and register btc reward addresses, linked transparently to the STX holder address. One component of the solution enables fraud proof swaps of btc for stx over the Lightning network using the LSAT protocol. The main project can be found at [rStack](https://stax.risidio.com).
 
-As it stands the contract here provides the transfer function of the stx tokens that have been purchased indepently via a lightning transaction. LSAT generates a token that combines with the payment preimage to provide a proof of payment. On receipt of this token via a separate websocket connection an 'admin' wallet is able to call this contract to make the final transfer.
+The clarity contract here provides the transfer function of the stx tokens that have been purchased indepently via a lightning transaction and also a register for the stackers reward address. The registration happens in conjunction with payment for STX tokens via LSAT generates and in so doing a macaroon is registered that proves the service level agreement by locking in some key information. Combining the macaroon with the Lightning payment preimage provides a proof of payment and locks in some meta data. Using this technique the user can authenticate their bitcoin address while purchasing stx tokens and then register this information with the clartiy contract.
 
-We ended up building the tools to deploy the contract on testnet - we didin't realise we were doing this in parallel with the Blockstack PBC explorer development. This is probably beneficial in the long run as it helps to decentralise the project.
+We ended up building the tools to deploy the contract on testnet - we didin't realise we were doing this in parallel with the Blockstack PBC explorer development. In the longer term its beneficial to have multiple providers of this type of infrastructure as its unlikely all users will opt to run the blockchain locally.
 
-Challenges involved have all been around logistics of getting it working on mainnet. Figuring out the correct value for the nonce, for example, when broadcasting transactions and getting our heads around the multiple calls and states of the application.
-
-Our goals / roadmap with this work would be to provide an educational site and build services such as delegated stacking to help small STX token holders participate in proof of transfer.
+Challenges have revolved around logistics of getting things working. Figuring out the correct value for the nonce, dealing with integration testing, financial constraints etc, when broadcasting transactions and getting our heads around the multiple calls and states of the application.
 
 ## Unit Testing
 
@@ -60,6 +57,7 @@ Check balances and contract deployment using the API;
 
 ## References
 
+* [rStack](https://stax.risidio.com)
 * [Blockstack Clarity Documentation](https://docs.blockstack.org/core/smart/rpc-api.html)
 * [Stacks Transactions JS Library](https://github.com/blockstack/stacks-transactions-js)
 * [Stacks Blockchain](https://github.com/blockstack/stacks-blockchain)

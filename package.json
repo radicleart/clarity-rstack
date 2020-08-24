@@ -26,9 +26,9 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@blockstack/clarity": "^0.1.13",
-    "@blockstack/clarity-native-bin": "^0.1.13",
-    "@blockstack/stacks-transactions": "0.5.0-beta.1",
+    "@blockstack/clarity": "^0.2.0",
+    "@blockstack/clarity-native-bin": "^0.2.0",
+    "@blockstack/stacks-transactions": "^0.6.0-test.1",
     "bn.js": "^5.1.1"
   }
 }
