@@ -16,10 +16,20 @@
 ;; -------
 ;; preimage-map : map of payments against recipients
 (define-map preimage-map ((preimage (buff 32))) ((recipient principal) (amount uint) (paid bool)))
-(define-map btc-address-map ((btc-address (buff 32))) ((stacker-address principal) (lockin-amt uint) (paid bool)))
+(define-map btc-address-map ((btc-address (buff 56))) ((stacker-address principal) (lockin-rate uint)))
 
 ;; Public Functions
 ;; ----------------
+
+;; Register a btc address for a stacking pool.
+;;    lockin-rate - the stx/btc exchange rate
+;;    stacker-address - the address of the stacker
+(define-public (register-btc-address (btc-address (buff 56)) (lockin-rate uint))
+  (begin
+    (map-insert btc-address-map {btc-address: btc-address} ((stacker-address tx-sender) (lockin-rate lockin-rate)))
+    (ok btc-address)
+  )
+)
 
 ;; Transfer stx:
 ;;      The preimage is not already contained in the map
@@ -46,14 +56,6 @@
   (ok (as-contract tx-sender))
 )
 
-;; Register a btc address for a stacking pool.
-(define-public (register-btc-address (btc-address (buff 32)) (amount uint))
-  (begin
-    (map-insert btc-address-map {btc-address: btc-address} ((stacker-address tx-sender) (lockin-amt amount) (paid true)))
-    (ok btc-address)
-  )
-)
-
 ;; Get a transfer for a given LSAT transfer by preimage..
 (define-public (get-tranfer (preimage (buff 32)))
   (match (map-get? preimage-map {preimage: preimage})
@@ -62,11 +64,14 @@
 )
 
 ;; Determine whether the given btc address has already been registered..
-(define-public (is-btc-registered (btc-address (buff 32)))
+(define-public (is-btc-registered (btc-address (buff 56)))
   (match (map-get? btc-address-map {btc-address: btc-address})
     address (ok address) (err not-found)
   )
 )
+
+;; Private Functions
+;; ----------------
 
 ;; Are there enough funds in the contract to make the transfer?
 (define-private (is-transfer-possible (amt uint) (owner principal))

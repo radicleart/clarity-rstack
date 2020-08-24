@@ -55,20 +55,22 @@ describe("Lightning swaps test suite", () => {
       const result = await readFromContract(client, "get-tranfer", ["\"815\""]);
       assert.isOk(result.rawResult.indexOf('err u100') > -1, "Ensure amount not found");
     })
-
-    /**
-    it ("should return correct project id", async () => {
-      const result = await readFromContract(client, "get-project-id", ["\"admin asset\""]);
-      assert.isOk(result.rawResult.indexOf("100") > -1);
-    })
-
-    it ("should return correct owner (administrator)", async () => {
-      const result = await readFromContract(client, "get-owner", ["\"admin asset\""], true);
-      assert.isOk(result.rawResult.indexOf(contractKey) > -1);
-    })
-**/
   })
   
+  describe("== BTC Address Tests ================================================", () => {
+    
+    it ("should not let sender do transfer as sender and receiver the same", async () => {
+      let args = ["\"tb1q6ue638m4t5knwxl4kwhwyuffttlp0ffee3zn3e\"", "u20"];
+      let txreceive = await execMethod(client, contractKey, "register-btc-address", args, true);
+      assert.isOk(txreceive.success, "Transaction succeeded");
+    })
+
+    it("should be registered at this address", async () => {
+      const result = await readFromContract(client, "is-btc-registered", ["\"tb1q6ue638m4t5knwxl4kwhwyuffttlp0ffee3zn3e\""]);
+      assert.isOk(result.rawResult === '(ok (tuple (lockin-rate u20) (stacker-address ST1EYJJ3V4DNRVHRWANP8S3CXJ70SFBJF2F8DH2RM)))', "Ensure amount not found");
+    })
+  })
+
   after(async () => {
     await provider.close()
   })
