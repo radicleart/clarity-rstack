@@ -11,7 +11,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "test": "mocha 'test/unit/swaps.ts'",
+    "test": "mocha",
     "test:watch": "mocha --watch",
     "iswaps": "mocha 'test/integration/swaps.ts'",
     "uswaps": "mocha 'test/unit/swaps.ts'"
