@@ -2,7 +2,7 @@
 
 ## Delegated Stacking and Fraud Proof Swaps
 
-Enable Delegated Stacking via swaps of Lightning BTC to STX tokens using Lightning Service Authentication Tokens (LSAT/402) protocol. Our goals revolve around providing services to help small STX token holders participate in proof of transfer. Our project [rStack](https://stax.risidio.com) is a fully decentralised application using Gaia for data storage.
+Enable Delegated Stacking via swaps of Lightning BTC to STX tokens using Lightning Service Authentication Tokens (LSAT/402) protocol. Our goals revolve around providing services to help small STX token holders participate in proof of transfer. Our project [rStack](https://stacks.risidio.com) is a fully decentralised application using Gaia for data storage.
 
 The Clarity contract is part of a more ambitious project. Its purpose is to transfer STX tokens and register btc reward addresses, linked transparently to the STX holder address. One component of the solution enables fraud proof swaps of btc for stx over the Lightning network using the LSAT protocol.
 
@@ -57,7 +57,7 @@ Check balances and contract deployment using the API;
 
 ## References
 
-* [rStack](https://stax.risidio.com)
+* [rStack](https://stacks.risidio.com)
 * [Blockstack Clarity Documentation](https://docs.blockstack.org/core/smart/rpc-api.html)
 * [Stacks Transactions JS Library](https://github.com/blockstack/stacks-transactions-js)
 * [Stacks Blockchain](https://github.com/blockstack/stacks-blockchain)
